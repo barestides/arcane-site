@@ -1,0 +1,13 @@
+body {
+    background-color: #F5F5F5;
+    /* background: #ACE url("../img/main.jpg") no-repeat fixed center center */
+}
+
+p {
+    font-size: 18px;
+}
+
+#ip-box {
+    font-size: 21px;
+    margin-right: 10px;
+}

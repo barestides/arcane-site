@@ -1,19 +1,29 @@
 (ns arcane-site.server
-  (:require [org.httpkit.server :as httpkit]
+  (:require
+   [clojure.pprint :as pprint]
+   [org.httpkit.server :as httpkit]
             [ring.util.response :as resp]
             [ring.middleware.format :refer [wrap-restful-format]]
+            [ring.middleware.resource :as resource]
+            [ring.middleware.params :as params]
             [bidi.bidi :as bidi]
-            [bidi.ring :refer (make-handler)]
+            [bidi.ring :refer (make-handler) :as br]
             [arcane-site.routes :as routes]
-            [arcane-site.pages :as pages]))
+            [arcane-site.views.pages :as pages]))
 
 (def routes->handlerfns
-   {:index pages/index-page
-     :slick pages/slick-page})
+  ;;Static pages don't need the request info
+ (let [page (fn [page-handler]
+               (fn [_] resp/response (page-handler)))]
+   {:index (fn [_] (pages/index-page))
+    :apply (fn [_] (pages/main-application))
+    :submit-app #(pprint/pprint %)}))
 
 (def app (-> routes/routes
              (make-handler routes->handlerfns )
-             (wrap-restful-format :formats [:edn :json])))
+             (resource/wrap-resource "public")
+             (wrap-restful-format :formats [:edn :json])
+             params/wrap-params))
 
 (defonce server (atom nil))
 
