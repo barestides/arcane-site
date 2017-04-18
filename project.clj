@@ -9,6 +9,8 @@
                  [bidi "2.0.16"]
                  [ring-middleware-format "0.7.2"]
                  [hiccup "1.0.5"]
+                 [bouncer "1.0.1"]
+                 [cheshire "5.7.0"]
 
                  [environ "1.1.0"]
                  [mysql/mysql-connector-java "5.1.6"]
