@@ -13,6 +13,8 @@
            [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
            (page/include-css "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")]
            (page/include-css "/css/site.css")
+           (page/include-js "https://code.jquery.com/jquery-3.2.1.min.js")
+           (page/include-js "/js/site.js")
           [:body
            components/nav
            [:div.container
