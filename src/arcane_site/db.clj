@@ -28,7 +28,7 @@
    :password (environ/env :database-password)})
 
 (def sample-app
-  {:username "jugglingman456"
+  {:ign "jugglingman456"
    :email "barestides@gmail.com"
    :age 20
    :bio "I administer this server; I shouldn't need to apply!"

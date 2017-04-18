@@ -53,23 +53,23 @@
    [:div.form-group
     [:label.col-sm-2.control-label {:for "ign"} "Minecraft Username"]
     [:div.col-sm-3
-     [:input#ign.form-control {:type :text :name "ign"}]]]
+     [:input#ign.form-control {:type :text :name "ign" :required true} ]]]
    [:div.form-group
     [:label.col-sm-2.control-label {:for "bio"} "A little about yourself"]
     [:div.col-sm-5
-     [:textarea#bio.form-control {:rows 5 :name "bio"}]]]
+     [:textarea#bio.form-control {:rows 5 :name "bio" :required true}]]]
    [:div.form-group
     [:label.col-sm-2.control-label {:for "age"} "Age"]
     [:div.col-sm-1
-     [:input#age.form-control {:type :number :name "age"}]]]
+     [:input#age.form-control {:type :number :name "age" :required true}]]]
    [:div.form-group
     [:label.col-sm-2.control-label {:for "referral"} "Referral"]
     [:div.col-sm-5
-     [:input#referral.form-control {:type :text :name "referral"}]]]
+     [:input#referral.form-control {:type :text :name "referral" :required true}]]]
    [:div.form-group
-    [:label.col-sm-2.control-label {:for "admin-ign"} "Any admin's username"]
+    [:label.col-sm-2.control-label {:for "staff-ign"} "Any staff's username"]
     [:div.col-sm-3
-     [:input#admin-ign.form-control {:type :text :name "admin-ign"}]]]
+     [:input#staff-ign.form-control {:type :text :name "staff-ign" :required true}]]]
    [:div.form-group
     [:div.checkbox.col-sm-offset-2.col-sm-10
      [:label [:input#email-toggle {:type :checkbox :value "" :name "email-toggle"}
