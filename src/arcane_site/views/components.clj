@@ -51,9 +51,9 @@
    {:action (b/path-for routes/routes :submit-app)
     :method :post}
    [:div.form-group
-    [:label.col-sm-2.control-label {:for "ign"} "Minecraft Username"]
+    [:label.col-sm-2.control-label {:for "username"} "Minecraft Username"]
     [:div.col-sm-3
-     [:input#ign.form-control {:type :text :name "ign" :required true} ]]]
+     [:input#username.form-control {:type :text :name "username" :required true} ]]]
    [:div.form-group
     [:label.col-sm-2.control-label {:for "bio"} "A little about yourself"]
     [:div.col-sm-5

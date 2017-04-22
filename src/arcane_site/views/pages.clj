@@ -44,3 +44,8 @@
      [:h1 "Greylist Application"]
      [:p (copy/get-copy :application-about)]
      components/application-form]))
+
+(defn app-success []
+  (gen-page
+   "Success"
+   [:h1 "Thank you for your application!"]))
