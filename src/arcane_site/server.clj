@@ -20,6 +20,7 @@
                (fn [_] resp/response (page-handler)))]
    {:index (fn [_] (pages/index-page))
     :apply (fn [_] (pages/main-application))
+    :app-success (fn [_] (pages/app-success))
     :submit-app handlers/submit-app}))
 
 (def app (-> routes/routes
