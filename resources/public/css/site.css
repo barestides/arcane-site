@@ -11,3 +11,25 @@ p {
     font-size: 21px;
     margin-right: 10px;
 }
+
+.application {
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 10px;
+    background-color: #F9F9F9;
+}
+
+.app-top {
+    border-bottom: 1px solid #DDD;
+}
+
+.application * {
+    padding: 3px;
+}
+
+.btn {
+    background-color: #FFF;
+    color: #000;
+}

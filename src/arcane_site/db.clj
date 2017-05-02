@@ -7,7 +7,7 @@
 
 (def table-specs
   [;;meta stuff
-   [:id :int "not null" "auto_increment"]
+   [:id :int "not null" "auto_increment" "primary key"]
    [:date :datetime]
    ;;Status of application, pending, accepted, denied
    [:status "varchar(7)"]
@@ -20,7 +20,7 @@
    [:username "varchar(15)" "not null"]
    [:email "varchar(255)"]
    [:age "tinyint(255)"]
-   [:bio "blob"]
+   [:bio "text"]
    [:referral "varchar(255)"]])
 
 (def database
@@ -48,3 +48,20 @@
   []
   (jdbc/query
    database "SELECT * FROM applications"))
+
+(defn get-pending-apps
+  []
+  (jdbc/query
+   database "SELECT * FROM applications WHERE status = 'PENDING'"))
+
+(defn get-email [id]
+  (:email (first (jdbc/query database
+                             ["SELECT email FROM applications WHERE id = ?" id] )))
+  )
+
+(defn review-app! [id comments decision staff-name]
+  (let [status (case decision
+                 :accept "ACCEPT"
+                 :deny "DENY")]
+    (jdbc/update! database :applications {:status status :comment comments :reviewed_by staff-name}
+                  ["id = ? " id])))

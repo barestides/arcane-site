@@ -1,7 +1,9 @@
 (ns arcane-site.views.components
   (:require [hiccup.page :as page]
             [bidi.bidi :as b]
+            [arcane-site.util :as util]
             [arcane-site.views.copy :as copy]
+            [arcane-site.db :as db]
             [arcane-site.routes :as routes]))
 
 ;;Navbar at top of page
@@ -84,3 +86,41 @@
      [:div.checkbox
       [:label [:input {:type :checkbox :value ""} (copy/get-copy :application-checkbox)]]]]]
    [:input.btn.btn-default.col-sm-offset-2 {:type :submit :value "Submit"}]])
+
+(defn application [app-map]
+  (let [{:keys [date username age email bio referral id]} app-map]
+    [:div.application
+     [:div.app-top
+      [:div.col-sm-2 [:b username]]
+      [:div.col-sm-offset-10 date]
+      [:div.col-sm-12.text-muted email]]
+     [:div.app-main.col-sm-12
+      [:div [:b "Age "] age]
+      [:div [:b "Bio "] bio]
+      [:div [:b "Referral "] referral]]
+
+     [:form.app-review {:action (b/path-for routes/routes :review-app)
+                        :method "post"}
+      [:div.form-group
+       [:label.control-label {:for "comments"} "Comments for Applicant"]
+       [:textarea#comments.form-control {:rows 3 :name "comments"}]]
+      ;;we don't really need to send username
+      [:input {:type :hidden :value username :name "username"}]
+      [:input {:type :hidden :value id :name "id"}]
+      [:div.form-group
+       [:label.control-label {:for "staff-name"} "Reviewer Username"]
+       [:select.form-control {:name "staff-name"}
+        (map #(conj [:option %]) (util/get-staff-usernames))]]
+      [:input.review-btn.col-lg-2.btn.btn-success {:type :submit :value "Accept" :style
+                                               "margin-right: 5px" :name "accept"}]
+      [:input.review-btn.col-lg-2.btn.btn-danger {:type :submit :value "Deny" :name "deny"}]]
+
+    ]))
+
+(defn application-list []
+  [:div.col-sm-8
+   (let [apps (db/get-pending-apps)]
+     (if (empty? apps)
+       [:h3 "No pending apps"]
+       (map application (db/get-pending-apps))))]
+  )
