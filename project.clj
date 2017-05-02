@@ -8,9 +8,11 @@
                  [http-kit "2.2.0"]
                  [bidi "2.0.16"]
                  [ring-middleware-format "0.7.2"]
+                 [ring/ring-json "0.4.0"]
                  [hiccup "1.0.5"]
                  [bouncer "1.0.1"]
                  [cheshire "5.7.0"]
+                 [com.draines/postal "2.0.2"]
 
                  [environ "1.1.0"]
                  [mysql/mysql-connector-java "5.1.6"]

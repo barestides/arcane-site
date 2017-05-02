@@ -2,11 +2,10 @@
   (:require [clojure.pprint :as pprint]
             [bouncer.core :as bouncer]
             [bouncer.validators :as v]
-            [org.httpkit.client :as http]
             [environ.core :as environ]
-            [cheshire.core :as chesh]
             [ring.util.response :as resp]
             [bidi.bidi :as bidi]
+            [arcane-site.email :as email]
             [arcane-site.routes :as routes]
             [arcane-site.db :as db]
             [arcane-site.util :as util]))
@@ -18,12 +17,7 @@
   {:default-message-format "Must give a valid staff name"}
   [name]
   ;;We get the valid staff usernames from the forum.
-  (let [req-url (str "https://forum.arcaneminecraft.com/admin/users/list/staff.json?api_key="
-                     (environ/env :forum-api-key))
-        resp (http/get req-url)
-        ;;convert json->edn and extract usernames
-        valid-usernames (map :username (chesh/parse-string (:body @resp) true))]
-    (util/string-in-coll-case-ignore? name valid-usernames)))
+  (util/string-in-coll-case-ignore? name (util/get-staff-usernames)))
 
 (def app-validator
   {:username v/required
@@ -46,11 +40,23 @@
         (-> app-map
             ;;We just want to ensure that the applicant entered a valid staff name; we don't need
             ;;to store it.
-            (dissoc :staff-ign)
+            (dissoc :staff-ign :email-toggle)
             db/insert-application)
         (redirect :app-success))
       ;;If validation fails, send error to user
       (pprint/pprint "You have app errors")
       )
     )
+  )
+
+(defn review-app [req]
+  (pprint/pprint (:params req))
+  (let [{:keys [username comments id accept staff-name]} (:params req)
+        decision (if accept :accept :deny)
+        email (db/get-email id)]
+    (do (db/review-app! id comments decision staff-name)
+        (email/email-app-review username email decision)
+        (resp/response ""))
+    )
+
   )

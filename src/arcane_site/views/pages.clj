@@ -11,10 +11,11 @@
           [:head
            [:title (str title " &middot; Arcane Survival")]
            [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-           (page/include-css "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")]
+           (page/include-css "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
            (page/include-css "/css/site.css")
            (page/include-js "https://code.jquery.com/jquery-3.2.1.min.js")
-           (page/include-js "/js/site.js")
+           (page/include-js "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+           (page/include-js "/js/site.js")]
           [:body
            components/nav
            [:div.container
@@ -49,3 +50,10 @@
   (gen-page
    "Success"
    [:h1 "Thank you for your application!"]))
+
+(defn review []
+  (gen-page
+   "Application Review"
+   (list [:h1 "Pending Applications"]
+         (components/application-list)))
+  )
