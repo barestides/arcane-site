@@ -6,18 +6,23 @@ $(document).ready(function() {
 
 $(function () {
     $('.review-btn').click (function (e){
+	e.preventDefault ();
 	var data =  $(this).closest ('form') .serializeArray();
+	var $app_element = $(this).closest ('.application');
 	data.push ({name: this.name, value: this.value});
-	console.log (data);
 	$.ajax ({
 	    type: $ (this).closest('form').attr ('method'),
 	    url: $ (this).closest('form').attr ('action'),
 	    data: data,
 	    success: function (result){
-		alert (result);
+		$app_element.hide();
+	    },
+	    error: function (result){
+		//jinkies maybe add actual error handling here
+		//it doesn't really matter, as this is only for staff
+		console.log(result);
 	    }
 	});
-	e.preventDefault ();
     });
 });
 
@@ -33,18 +38,16 @@ $(function () {
 	    data: $(this).serializeArray(),
 	    success: function(response) {
 		$('#app-page').hide();
-		$('#app-success').removeClass('hidden');
-	},
-	error: function(response) {
-	    console.log (response);
-	    $('#form-errors').removeClass('hidden');
-	    var $errorlist = $('#form-errors ul');
-	    $.each(response.responseJSON,
-		   function (i, val) {
-		       var listitem = '<li>' + val + '</li>';
-		       $errorlist.append(listitem);
-		   });
-	}
+		$('#app-success').removeClass('hidden');},
+	    error: function(response) {
+		console.log (response);
+		$('#form-errors').removeClass('hidden');
+		var $errorlist = $('#form-errors ul');
+		$.each(response.responseJSON,
+		       function (i, val) {
+			   var listitem = '<li>' + val + '</li>';
+			   $errorlist.append(listitem);
+		       });}
+	});
     });
-});
 });
