@@ -16,6 +16,4 @@
         resp (http/get req-url)
         ;;convert json->edn and extract usernames
         valid-usernames (map :username (chesh/parse-string (:body @resp) true))]
-    (remove (partial = "system") valid-usernames)
-    )
-  )
+    (remove (partial = "system") valid-usernames)))

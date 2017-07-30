@@ -59,5 +59,5 @@
         decision (if accept :accept :deny)
         email (db/get-email id)]
     (do (db/review-app! id comments decision staff-name)
-        (email/email-app-review username email decision)
+        (when email (email/email-app-review username email decision comments))
         (resp/response ""))))

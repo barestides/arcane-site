@@ -135,5 +135,4 @@
    (let [apps (db/get-pending-apps)]
      (if (empty? apps)
        [:h3 "No pending apps"]
-       (map application (db/get-pending-apps))))]
-  )
+       (map application (db/get-pending-apps))))])
