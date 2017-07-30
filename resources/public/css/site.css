@@ -33,3 +33,9 @@ p {
     background-color: #FFF;
     color: #000;
 }
+
+#form-errors {
+    border-radius: 2px;
+    margin-bottom: 20px;
+    padding: 5px;
+}

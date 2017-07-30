@@ -49,7 +49,7 @@
 ;;abstractions to clean it up, but I don't think that there will be many more forms, so that's
 ;;not useful right now.
 (def application-form
-  [:form.form-horizontal
+  [:form.form-horizontal.app-form
    {:action (b/path-for routes/routes :submit-app)
     :method :post}
    [:div.form-group
@@ -71,7 +71,9 @@
    [:div.form-group
     [:label.col-sm-2.control-label {:for "staff-ign"} "Any staff's username"]
     [:div.col-sm-3
-     [:input#staff-ign.form-control {:type :text :name "staff-ign" :required true}]]]
+     [:input#staff-ign.form-control {:type :text :name "staff-ign" :required true
+                                     ;; jinkies temp for testing.. remove
+                                     :value "jugglingman"}]]]
    [:div.form-group
     [:div.checkbox.col-sm-offset-2.col-sm-10
      [:label [:input#email-toggle {:type :checkbox :value "" :name "email-toggle"}
@@ -84,8 +86,19 @@
    [:div.form-group
     [:div.col-sm-offset-2.col-sm-10
      [:div.checkbox
-      [:label [:input {:type :checkbox :value ""} (copy/get-copy :application-checkbox)]]]]]
-   [:input.btn.btn-default.col-sm-offset-2 {:type :submit :value "Submit"}]])
+      [:label [:input {:type :checkbox :value "" :required true}
+               (copy/get-copy :application-checkbox)]]]]]
+   [:div.row
+    [:div#form-errors.hidden.bg-danger.col-sm-offset-2.col-sm-4
+     [:p "There are errors with your application:"]
+     [:ul]]]
+   [:div.row
+    [:input.btn.btn-default.col-sm-offset-2 {:type :submit :value "Submit"}]]])
+
+(def app-success
+  [:div#app-success.hidden
+   [:h1 "Thank you for applying to Arcane Survival!"]
+   [:p "Expect a response within 2-3 days at the latest."]])
 
 (defn application [app-map]
   (let [{:keys [date username age email bio referral id]} app-map]

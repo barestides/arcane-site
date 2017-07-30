@@ -19,6 +19,10 @@
   ;;We get the valid staff usernames from the forum.
   (util/string-in-coll-case-ignore? name (util/get-staff-usernames)))
 
+(defn error-response [body]
+  {:status 400
+   :body body})
+
 (def app-validator
   {:username v/required
    :bio v/required
@@ -31,8 +35,11 @@
 (defn submit-app
   "On successful validation, insert the request from the application form into the db."
   [req]
-  (let [app-map (update (:params req) :age #(Integer. %))
+  (let [app-map (-> req
+                    :params
+                    (update :age #(Integer. %)))
         [validation-errors app-map] (bouncer/validate app-map app-validator)]
+    (prn validation-errors)
     (if (nil? validation-errors)
       ;;If we have no validation errors, insert the app into the database, and send the user to the
       ;;success page
@@ -44,10 +51,7 @@
             db/insert-application)
         (redirect :app-success))
       ;;If validation fails, send error to user
-      (pprint/pprint "You have app errors")
-      )
-    )
-  )
+      (error-response (apply concat (vals validation-errors))))))
 
 (defn review-app [req]
   (pprint/pprint (:params req))
@@ -56,7 +60,4 @@
         email (db/get-email id)]
     (do (db/review-app! id comments decision staff-name)
         (email/email-app-review username email decision)
-        (resp/response ""))
-    )
-
-  )
+        (resp/response ""))))
