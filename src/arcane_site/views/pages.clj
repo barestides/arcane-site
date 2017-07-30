@@ -1,6 +1,8 @@
 (ns arcane-site.views.pages
   (:require [hiccup.page :as page]
             [bidi.bidi :as b]
+            [clojure.pprint :as pprint]
+            [arcane-site.analytics :as analytics]
             [arcane-site.views.copy :as copy]
             [arcane-site.views.components :as components]))
 
@@ -35,16 +37,16 @@
    "404"
    [:div
     components/nav
-    [:h1 "404: the page isn ot found"]]
-   ))
+    [:h1 "404: the page isn ot found"]]))
 
 (defn main-application []
   (gen-page
    "Application"
-    [:div
-     [:h1 "Greylist Application"]
-     [:p (copy/get-copy :application-about)]
-     components/application-form]))
+   [:div [:div#app-page
+          [:h1 "Greylist Application"]
+          [:p (copy/get-copy :application-about)]
+          components/application-form]
+    components/app-success]))
 
 (defn app-success []
   (gen-page
@@ -55,5 +57,17 @@
   (gen-page
    "Application Review"
    (list [:h1 "Pending Applications"]
-         (components/application-list)))
-  )
+         (components/application-list))))
+
+(defn user-page [req]
+  (let [user (get-in req [:params :username])
+        user-hours (analytics/total-time-for-user-hours user)
+        active-since (partial analytics/total-time-for-user-hours user)]
+    (gen-page
+     user
+     [:div
+      [:h1 user]
+      [:div "Total hours: " user-hours]
+      [:div "Total hours past day: " (active-since 24)]
+      [:div "Total hours past week: " (active-since (* 24 7))]
+      [:div "Total hours past 30 days: " (active-since (* 24 30))]])))
