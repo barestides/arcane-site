@@ -1,5 +1,6 @@
 (ns arcane-site.util
   (:require [clojure.string :as str]
+            [clj-ssh.ssh :as ssh]
             [cheshire.core :as chesh]
             [org.httpkit.client :as http]
             [environ.core :as environ]))
@@ -17,3 +18,15 @@
         ;;convert json->edn and extract usernames
         valid-usernames (map :username (chesh/parse-string (:body @resp) true))]
     (remove (partial = "system") valid-usernames)))
+
+(defn execute-game-command [command]
+  (let [agent (ssh/ssh-agent {})
+        screen-command (str "screen -S mc -p 0 -X stuff '" command " \\015'")]
+    (let [session (ssh/session agent (environ/env :game-server-host)
+                               {:strict-host-key-checking :no
+                                ;;because apparently environ ignores types...
+                                :port (Integer. (environ/env :game-server-port))
+                                :username (environ/env :game-server-user)
+                                :password (environ/env :game-server-password)})]
+      (ssh/with-connection session
+        (let [result (ssh/ssh session {:cmd screen-command})])))))

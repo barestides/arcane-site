@@ -10,6 +10,7 @@
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (page/html5
+          {:lang "en"}
           [:head
            [:title (str title " &middot; Arcane Survival")]
            [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]

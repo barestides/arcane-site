@@ -23,8 +23,7 @@
     :app-success (fn [_] (pages/app-success))
     :review (fn [_] (pages/review))
     :submit-app handlers/submit-app
-    :review-app handlers/review-app
-    }))
+    :review-app handlers/review-app}))
 
 (def app (-> routes/routes
              (make-handler routes->handlerfns)
