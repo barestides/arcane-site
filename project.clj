@@ -13,7 +13,7 @@
                  [bouncer "1.0.1"]
                  [cheshire "5.7.0"]
                  [com.draines/postal "2.0.2"]
-
+                 [clj-ssh "0.5.14"]
                  [environ "1.1.0"]
                  [mysql/mysql-connector-java "5.1.6"]
                  [org.clojure/java.jdbc "0.7.0-alpha3"]

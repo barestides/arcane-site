@@ -23,6 +23,10 @@
   {:status 400
    :body body})
 
+(defn greylist-player [username]
+  (let [greylist-command (str "pex group trusted user add " username)]
+    (util/execute-game-command greylist-command)))
+
 (def app-validator
   {:username v/required
    :bio v/required
@@ -54,10 +58,10 @@
       (error-response (apply concat (vals validation-errors))))))
 
 (defn review-app [req]
-  (pprint/pprint (:params req))
   (let [{:keys [username comments id accept staff-name]} (:params req)
         decision (if accept :accept :deny)
         email (db/get-email id)]
     (do (db/review-app! id comments decision staff-name)
-        (when email (email/email-app-review username email decision comments))
+        (when (not (empty? email)) (email/email-app-review username email decision comments))
+        (when accept (greylist-player username))
         (resp/response ""))))
