@@ -10,12 +10,9 @@
                   ["donate" :donate]
                   ["forum" :forum]
                   ["tools" :tools]
-                  ["dynmap" :dynmap]
                   ["rules" :rules]
 
                   ;;Actually does things
                   ["submit-app" {:post :submit-app}]
-                  ["review-app" {:post :review-app}]
-
-
-                  ]])
+                  ["review-app" {:post :review-app}]]
+             "game.arcaneminecraft.com/dynmap" :dynmap])
