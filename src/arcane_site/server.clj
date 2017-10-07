@@ -21,6 +21,8 @@
    {:index (fn [_] (pages/index-page))
     :apply (fn [_] (pages/main-application))
     :app-success (fn [_] (pages/app-success))
+    :tools (fn [_] (pages/tools-page))
+    :rules (fn [_] (pages/rules-page))
     :review (fn [_] (pages/review))
     :submit-app handlers/submit-app
     :review-app handlers/review-app}))
@@ -31,8 +33,7 @@
              (wrap-restful-format :formats [:json :edn])
              kp/wrap-keyword-params
              params/wrap-params
-             wrap-json-body
-             ))
+             wrap-json-body))
 
 (defonce server (atom nil))
 

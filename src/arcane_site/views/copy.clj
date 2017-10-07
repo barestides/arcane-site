@@ -17,7 +17,17 @@ greylisted."
    "Send me updates on my application!"
    :application-checkbox
    (list "By checking this, you acknowledge that this is an application to build on the server, "
-         [:em [:b "not"]] " to become a staff member.")})
+         [:em [:b "not"]] " to become a staff member.")
+   :respect "You must respect everyone. Causing any kind of harm or abuse to another person is not allowed. This includes bullying, harassment, and much more. Racist, harsh, or otherwise rude language towards players is not tolerated. Swearing is allowed within reason."
+   :cheating "Client modifications or texture packs that give an unfair advantage (e.g. x-ray) are not allowed. Any kind of exploit that places you at an unfair advantage over other players is strictly against the rules.
+However, you are allowed to use OptiFine and Mini-Map mods."
+   :stealing "You may not steal from other players or grief their builds. You may not kill anyone without their permission. When you kill someone in a PvP fight, you must give-back the dropped items (unless specified). In other words, you may not loot the items from another player without permission. You can toggle PvP using /pvp. Remember to turn it off when you don't want to fight!"
+   :building "You can mark your territory using a sign. You may not build on land clearly claimed by another player. Even if no marked sign is present, you may not build too close to another player without their permission. Ask staff if you are unsure."
+   :chat "Do not fill the chat with memes, CAPS-LOCK, or the same message over and over."
+   :rules-discretion1 [:em "Many of these rules are entirely dependent on context - server staff will decide what is ok and what is not."]
+   :rules-discretion2
+   [:em "Warnings will be issued before bans. If any rule is unclear, please ask a mod or admin."]
+   :rules-consequences [:em "Players who do not follow these rules will receive temporary or permanent mutes or bans. "]})
 
 (defn get-copy [key]
   (get copy-map key))

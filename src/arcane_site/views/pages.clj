@@ -21,27 +21,29 @@
            (page/include-js "/js/site.js")]
           [:body
            components/nav
-           [:div.container
-            body]])})
+           [:div.overlay]
+           [:div.container body]])})
 
 (defn index-page []
   (gen-page
    "Home"
-   [:div.jumbotron
-    [:h1 "Arcane Survival"]
-    components/ip-box
-    [:p (copy/get-copy :welcome-message)]
-    (components/button-link "Apply to Build" :apply)]))
+   [:div
+    [:div.jumbo
+     [:h1 "Arcane Survival"]
+     [:p (copy/get-copy :welcome-message)]]
+    [:div.ip-and-app-button
+     components/ip-box
+     (components/button-link "Apply to Build" :apply)]]))
 
 (defn not-found []
   (gen-page
    "404"
    [:div
     components/nav
-    [:h1 "404: the page isn ot found"]]))
+    [:h1 "404: the page is not found"]]))
 
 (defn main-application []
-  (gen-page
+ (gen-page
    "Application"
    [:div [:div#app-page
           [:h1 "Greylist Application"]
@@ -60,15 +62,28 @@
    (list [:h1 "Pending Applications"]
          (components/application-list))))
 
-(defn user-page [req]
-  (let [user (get-in req [:params :username])
-        user-hours (analytics/total-time-for-user-hours user)
-        active-since (partial analytics/total-time-for-user-hours user)]
-    (gen-page
-     user
-     [:div
-      [:h1 user]
-      [:div "Total hours: " user-hours]
-      [:div "Total hours past day: " (active-since 24)]
-      [:div "Total hours past week: " (active-since (* 24 7))]
-      [:div "Total hours past 30 days: " (active-since (* 24 30))]])))
+(defn tools-page []
+  (gen-page
+   "Tools"
+   [:h1 "Tools"]))
+
+(defn rules-page []
+  (gen-page
+   "Rules"
+   [:div
+    [:h1 "Rules"]
+    (components/rules-list)]))
+
+;;This isn't ready yet
+;; (defn user-page [req]
+;;   (let [user (get-in req [:params :username])
+;;         user-hours (analytics/total-time-for-user-hours user)
+;;         active-since (partial analytics/total-time-for-user-hours user)]
+;;     (gen-page
+;;      user
+;;      [:div
+;;       [:h1 user]
+;;       [:div "Total hours: " user-hours]
+;;       [:div "Total hours past day: " (active-since 24)]
+;;       [:div "Total hours past week: " (active-since (* 24 7))]
+;;       [:div "Total hours past 30 days: " (active-since (* 24 30))]])))

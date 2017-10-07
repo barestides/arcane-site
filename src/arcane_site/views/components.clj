@@ -10,15 +10,17 @@
 (def nav
   [:nav.navbar.navbar-default
    [:div.container-fluid
-    [:div.navbar-header
-     [:a.navbar-brand {:href "/"} "Home"]]
-    (into [:ul.nav.navbar-nav] (mapv (fn [[title link]] [:li [:a {:href
-                                                                  (b/path-for routes/routes link)}
-                                                              title]])
-                                     [["Forum" :forum]
-                                      ["Tools" :tools]
-                                      ["Dynmap" :dynmap]
-                                      ["Rules" :rules]]))]])
+    (into [:ul.nav.navbar-nav]
+          (mapv (fn [[title link]] [:li [:a {:href link} title]])
+                [["Home" (b/path-for routes/routes :index)]
+                 ["Forum" "www.forum.arcaneminecraft.com"]
+                 ["Tools" (b/path-for routes/routes :tools)]
+                 ["Dynmap" "www.game.arcaneminecraft.com/dynmap"]
+                 ["Rules" (b/path-for routes/routes :rules)]]))]])
+
+;;;
+;;; Landing
+;;;
 
 ;;Box that includes the server IP in an input (maybe should be regular text) field along with a button
 ;;to copy the ip to the clipboard using this clipboard lib.
@@ -44,6 +46,10 @@
   [content link]
   [:a.btn.btn-primary.btn-lg.col-md-2 {:href (b/path-for routes/routes link)}
    content])
+
+;;;
+;;; Application
+;;;
 
 ;;The greylist application form for users to fill out. This looks messy, and we could have some
 ;;abstractions to clean it up, but I don't think that there will be many more forms, so that's
@@ -100,6 +106,10 @@
    [:h1 "Thank you for applying to Arcane Survival!"]
    [:p "Expect a response within 2-3 days at the latest."]])
 
+;;;
+;;; Review Page
+;;;
+
 (defn application [app-map]
   (let [{:keys [date username age email bio referral id]} app-map]
     [:div.application
@@ -126,9 +136,7 @@
         (map #(conj [:option %]) (util/get-staff-usernames))]]
       [:input.review-btn.col-lg-2.btn.btn-success {:type :submit :value "Accept" :style
                                                "margin-right: 5px" :name "accept"}]
-      [:input.review-btn.col-lg-2.btn.btn-danger {:type :submit :value "Deny" :name "deny"}]]
-
-    ]))
+      [:input.review-btn.col-lg-2.btn.btn-danger {:type :submit :value "Deny" :name "deny"}]]]))
 
 (defn application-list []
   [:div.col-sm-8
@@ -136,3 +144,30 @@
      (if (empty? apps)
        [:h3 "No pending apps"]
        (map application (db/get-pending-apps))))])
+
+;;;
+;;; Rules
+;;;
+
+(defn rule
+  [head description]
+  [:li
+   [:div.rule
+    [:h3 head]
+    [:p description]]])
+
+(defn rules-list []
+  (let [rule-headings {:respect "Respect"
+                       :cheating "Cheating"
+                       :stealing "Stealing, Griefing, and PvP"
+                       :building "Building"
+                       :chat "Chat"}]
+    [:div.content
+     [:div
+      (copy/get-copy :rules-discretion1)
+      [:br]
+      (copy/get-copy :rules-discretion2)]
+     [:ol (map (fn [[rule-key head]]
+                      (rule head (copy/get-copy rule-key)))
+               rule-headings)]
+     (copy/get-copy :rules-consequences)]))
