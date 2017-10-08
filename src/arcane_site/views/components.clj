@@ -7,11 +7,15 @@
             [arcane-site.routes :as routes]))
 
 ;;Navbar at top of page
-(def nav
+(defn nav
+  [title]
   [:nav.navbar.navbar-default
    [:div.container-fluid
     (into [:ul.nav.navbar-nav]
-          (mapv (fn [[title link]] [:li [:a {:href link} title]])
+          (mapv (fn [[nav-text link]]
+                  [:li [:a (merge {:href link}
+                                  (when (= title nav-text)
+                                    {:class "active"})) nav-text]])
                 [["Home" (b/path-for routes/routes :index)]
                  ["Forum" "www.forum.arcaneminecraft.com"]
                  ["Tools" (b/path-for routes/routes :tools)]
@@ -171,3 +175,11 @@
                       (rule head (copy/get-copy rule-key)))
                rule-headings)]
      (copy/get-copy :rules-consequences)]))
+
+;;;
+;;; Tools
+;;;
+
+(defn tools []
+  [:div]
+  )
