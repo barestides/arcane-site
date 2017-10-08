@@ -20,7 +20,7 @@
            (page/include-js "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
            (page/include-js "/js/site.js")]
           [:body
-           components/nav
+           (components/nav title)
            [:div.overlay]
            [:div.container body]])})
 
@@ -65,7 +65,9 @@
 (defn tools-page []
   (gen-page
    "Tools"
-   [:h1 "Tools"]))
+   [:div
+    [:h1 "Tools"]
+    (components/tools)]))
 
 (defn rules-page []
   (gen-page

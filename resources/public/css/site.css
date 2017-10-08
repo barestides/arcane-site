@@ -47,15 +47,20 @@ html {
 }
 
 .navbar {
-    margin-bottom: 0;
+    padding-bottom: 4px;
     border: none;
     background: none;
 }
 
 .navbar-default .navbar-nav>li>a {
-    color: #EEE;
-    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #CCC;
+    font-size: 18px;
 }
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-nav>li>a.active{
+    color: #EEE;
+    border-bottom: 1px solid #FF733B;}
 
 p {
     font-size: 18px;
