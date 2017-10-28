@@ -21,8 +21,8 @@
            (page/include-js "/js/site.js")]
           [:body
            (components/nav title)
-           [:div.overlay]
-           [:div.container body]])})
+           [:div.container body]
+           [:div.overlay]])})
 
 (defn index-page []
   (gen-page

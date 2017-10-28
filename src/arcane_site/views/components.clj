@@ -48,7 +48,7 @@
 (defn button-link
   "A link that looks like a button but behaves as a link (goes to a different page when clicked)"
   [content link]
-  [:a.btn.btn-primary.btn-lg.col-md-2 {:href (b/path-for routes/routes link)}
+  [:a.btn.large-btn.col-md-2 {:href (b/path-for routes/routes link)}
    content])
 
 ;;;
@@ -181,5 +181,7 @@
 ;;;
 
 (defn tools []
-  [:div]
+  [:div
+
+   ]
   )
