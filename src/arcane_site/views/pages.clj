@@ -20,9 +20,9 @@
            (page/include-js "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
            (page/include-js "/js/site.js")]
           [:body
-           (components/nav title)
-           [:div.container body]
-           [:div.overlay]])})
+           [:div.overlay
+            (components/nav title)
+            [:div.container body]]])})
 
 (defn index-page []
   (gen-page
