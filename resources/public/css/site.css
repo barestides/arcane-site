@@ -28,13 +28,8 @@ html {
 }
 
 .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: -1;
     background-color: rgba(0, 0, 0, 0.70);
-    margin: 0;
-    width: 100%;
     min-height: 100%;
 }
 
@@ -78,11 +73,10 @@ p {
     padding: 10px 16px;
     font-size: 18px;
     border-radius: 6px;
-    border: 1px solid #FF733B;
 }
 
 .large-btn:hover {
-    background-color: #FFDDCE;
+    border: 1px solid #FF733B;
 }
 
 #ip-box {
