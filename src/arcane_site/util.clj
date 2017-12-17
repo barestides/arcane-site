@@ -30,3 +30,23 @@
                                 :password (environ/env :game-server-password)})]
       (ssh/with-connection session
         (let [result (ssh/ssh session {:cmd screen-command})])))))
+
+;;from https://stackoverflow.com/questions/10062967/clojures-equivalent-to-pythons-encodehex-and-decodehex
+(defn hexify [s]
+  (format "%x" (new java.math.BigInteger (.getBytes s))))
+
+(defn hexify2 [s]
+  (apply str
+    (map #(format "%02x" (int %)) s)))
+
+(defn hexify3
+  "Convert byte sequence to hex string"
+  [coll]
+  (let [hex [\0 \1 \2 \3 \4 \5 \6 \7 \8 \9 \a \b \c \d \e \f]]
+      (letfn [(hexify-byte [b]
+        (let [v (bit-and b 0xFF)]
+          [(hex (bit-shift-right v 4)) (hex (bit-and v 0x0F))]))]
+        (apply str (mapcat hexify-byte coll)))))
+
+(defn hexify-str [s]
+  (hexify3 (.getBytes s)))

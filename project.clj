@@ -15,6 +15,9 @@
                  [com.draines/postal "2.0.2"]
                  [clj-ssh "0.5.14"]
                  [environ "1.1.0"]
+                 [clj-http "3.7.0"]
+                 [pandect "0.6.1"]
+                 [crypto-random "1.2.0"]
                  [mysql/mysql-connector-java "5.1.6"]
                  [org.clojure/java.jdbc "0.7.0-alpha3"]
                  ;;Need to decide if we want to / need to use honeysql or not
@@ -25,4 +28,5 @@
 
   :main ^:skip-aot arcane-site.core
   :target-path "target/%s"
+  :repl-options {:init-ns arcane-site.server}
   :profiles {:uberjar {:aot :all}})

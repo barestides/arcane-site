@@ -10,6 +10,7 @@
    [ring.middleware.json :refer [wrap-json-body]]
    [bidi.bidi :as bidi]
    [bidi.ring :refer (make-handler) :as br]
+   [arcane-site.authentication :as auth]
    [arcane-site.handlers :as handlers]
    [arcane-site.routes :as routes]
    [arcane-site.views.pages :as pages]))
@@ -23,7 +24,7 @@
     :app-success (fn [_] (pages/app-success))
     :tools (fn [_] (pages/tools-page))
     :rules (fn [_] (pages/rules-page))
-    :review (fn [_] (pages/review))
+    :review (fn [_] (resp/redirect (auth/authentication-url)))
     :submit-app handlers/submit-app
     :review-app handlers/review-app}))
 
