@@ -2,7 +2,6 @@
   (:require [clojure.pprint :as pprint]
             [bouncer.core :as bouncer]
             [bouncer.validators :as v]
-            [environ.core :as environ]
             [ring.util.response :as resp]
             [bidi.bidi :as bidi]
             [arcane-site.email :as email]
