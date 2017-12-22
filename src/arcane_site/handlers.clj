@@ -4,6 +4,8 @@
             [bouncer.validators :as v]
             [ring.util.response :as resp]
             [bidi.bidi :as bidi]
+            [arcane-site.views.pages :as pages]
+            [arcane-site.authentication :as auth]
             [arcane-site.email :as email]
             [arcane-site.routes :as routes]
             [arcane-site.db :as db]
@@ -64,3 +66,15 @@
         (when (not (empty? email)) (email/email-app-review username email decision comments))
         (when accept (greylist-player username))
         (resp/response ""))))
+
+(defn review-page [req server-state]
+  ;;there should be an if let with multiple bindings, and it only is true if all bindings work out.
+  ;;could have another one for if any bindings work, so an if-let-and and an if-let-or
+  (if-let [sso (get-in req [:params :sso])]
+    (let [sig (get-in req [:params :sig])
+          response (auth/decode-auth-response sso sig server-state)]
+      ;;jinkies do a 403 response
+      (if response
+        (pages/review)
+        (redirect :index)))
+    (resp/redirect (auth/authentication-url (bidi/path-for routes/routes :review) server-state))))

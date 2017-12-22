@@ -2,7 +2,6 @@
   (:require [hiccup.page :as page]
             [bidi.bidi :as b]
             [clojure.pprint :as pprint]
-            [arcane-site.analytics :as analytics]
             [arcane-site.views.copy :as copy]
             [arcane-site.views.components :as components]))
 

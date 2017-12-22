@@ -19,6 +19,7 @@
                  [pandect "0.6.1"]
                  [crypto-random "1.2.0"]
                  [mysql/mysql-connector-java "5.1.6"]
+                 [base64-clj "0.1.1"]
                  [org.clojure/java.jdbc "0.7.0-alpha3"]
                  ;;Need to decide if we want to / need to use honeysql or not
                  [honeysql "0.8.2"]]
