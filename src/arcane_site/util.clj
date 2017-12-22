@@ -3,6 +3,8 @@
             [clj-ssh.ssh :as ssh]
             [cheshire.core :as chesh]
             [org.httpkit.client :as http]
+            [ring.util.codec :as ring-codec]
+            [clojure.walk :as walk]
             [environ.core :as environ]))
 
 (defn string-in-coll-case-ignore?
@@ -31,22 +33,11 @@
       (ssh/with-connection session
         (let [result (ssh/ssh session {:cmd screen-command})])))))
 
-;;from https://stackoverflow.com/questions/10062967/clojures-equivalent-to-pythons-encodehex-and-decodehex
-(defn hexify [s]
-  (format "%x" (new java.math.BigInteger (.getBytes s))))
+(defn remove-newlines [s]
+  (apply str (filter (fn [c] (not= c \newline)) s)))
 
-(defn hexify2 [s]
-  (apply str
-    (map #(format "%02x" (int %)) s)))
-
-(defn hexify3
-  "Convert byte sequence to hex string"
-  [coll]
-  (let [hex [\0 \1 \2 \3 \4 \5 \6 \7 \8 \9 \a \b \c \d \e \f]]
-      (letfn [(hexify-byte [b]
-        (let [v (bit-and b 0xFF)]
-          [(hex (bit-shift-right v 4)) (hex (bit-and v 0x0F))]))]
-        (apply str (mapcat hexify-byte coll)))))
-
-(defn hexify-str [s]
-  (hexify3 (.getBytes s)))
+;;https://stackoverflow.com/questions/6591604/how-to-parse-url-parameters-in-clojure
+(defn parse-query-string
+  "Parse parameters from a string into a map."
+  [param-string]
+  (walk/keywordize-keys (ring-codec/form-decode param-string)))

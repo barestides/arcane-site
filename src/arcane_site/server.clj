@@ -15,6 +15,9 @@
    [arcane-site.routes :as routes]
    [arcane-site.views.pages :as pages]))
 
+(defonce server-state (atom {:nonces #{}}))
+(defonce server (atom nil))
+
 (def routes->handlerfns
   ;;Static pages don't need the request info
  (let [page (fn [page-handler]
@@ -24,7 +27,7 @@
     :app-success (fn [_] (pages/app-success))
     :tools (fn [_] (pages/tools-page))
     :rules (fn [_] (pages/rules-page))
-    :review (fn [_] (resp/redirect (auth/authentication-url)))
+    :review (fn [req] (handlers/review-page req server-state))
     :submit-app handlers/submit-app
     :review-app handlers/review-app}))
 
@@ -36,8 +39,6 @@
              params/wrap-params
              wrap-json-body))
 
-(defonce server (atom nil))
-
 (defn stop-server []
   (@server :timeout 100)
   (reset! server nil))
@@ -48,4 +49,5 @@
 (defn restart-server
   []
   (stop-server)
+  (reset! server-state {:nonces #{}})
   (reset! server (httpkit/run-server #'app {:port 8080})))
