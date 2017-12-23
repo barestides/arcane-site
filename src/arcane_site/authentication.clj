@@ -31,13 +31,16 @@
   (let [decoded-sig (pandect/sha256-hmac sso (environ/env :forum-sso-secret))]
     (if (= decoded-sig sig)
       ;;The linebreaks mess it up.. not sure why they're included..
-      (let [query-string (http-util/url-decode (base64/decode (util/remove-newlines sso)))
+      (let [query-string (-> sso
+                             util/remove-newlines
+                             base64/decode
+                             http-util/url-decode)
             query-map (util/parse-query-string query-string)
             {:keys [nonce moderator]} query-map]
         (if (contains? (:nonces @server-state) nonce)
           (do
-            (swap! server-state update :nonce disj nonce)
-            (if (= "true" (:moderator query-map))
+            (swap! server-state update :nonces disj nonce)
+            (if (= "true" moderator)
               true
               ;;user is not moderator
               false))

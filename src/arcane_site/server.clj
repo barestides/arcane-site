@@ -44,6 +44,7 @@
   (reset! server nil))
 
 (defn start-server []
+  (reset! server-state {:nonces #{}})
   (reset! server (httpkit/run-server #'app {:port 8080})))
 
 (defn restart-server
