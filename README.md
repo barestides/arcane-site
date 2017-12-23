@@ -8,6 +8,11 @@ process. The two main desired features being email update sending and a way to g
 the website. It soon became clear that it would be easier to consolidate the entirety of our in-house
 web pages in one project.
 
+# Notable Features
+- Staff may now greylist people directly from the application review page.
+- Authorization to restricted pages, like application review, is handled by discours.
+- Applicants may now sign up for (optional) emails regarding the status of their application.
+
 ## License
 
 Copyright © 2017 Arcane Survival
