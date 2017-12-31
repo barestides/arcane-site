@@ -12,7 +12,7 @@
 
 (defn authentication-url
   [route server-state]
-  (let [nonce (crypto-random/base64 20)
+  (let [nonce (crypto-random/url-part 20)
         return-url (str (environ/env :web-url) route)
         payload (str "nonce=" (http-util/url-encode nonce) "&return_sso_url=" return-url)
         payload-base64  (http-util/base64-encode (.getBytes payload))
@@ -27,7 +27,6 @@
 ;;jinkies add more detailed error messages for when auth fails
 (defn decode-auth-response
   [sso sig server-state]
-  (prn server-state)
   (let [decoded-sig (pandect/sha256-hmac sso (environ/env :forum-sso-secret))]
     (if (= decoded-sig sig)
       ;;The linebreaks mess it up.. not sure why they're included..
