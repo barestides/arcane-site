@@ -21,8 +21,8 @@
                  [mysql/mysql-connector-java "5.1.6"]
                  [base64-clj "0.1.1"]
                  [org.clojure/java.jdbc "0.7.0-alpha3"]
-                 ;;Need to decide if we want to / need to use honeysql or not
-                 [honeysql "0.8.2"]]
+                 [lobos "1.0.0-beta3"]]
+
   :plugins [[lein-ring "0.11.0"]
             [lein-environ "1.1.0"]]
   :ring {:handler arcane-site.server/app}

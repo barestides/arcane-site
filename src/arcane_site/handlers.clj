@@ -63,7 +63,8 @@
         decision (if accept :accept :deny)
         email (db/get-email id)]
     (do (db/review-app! id comments decision staff-name)
-        (when (not (empty? email)) (email/email-app-review username email decision comments))
+        (when (not (empty? email))
+          (email/email-app-review username email decision comments))
         (when accept (greylist-player username))
         (resp/response ""))))
 

@@ -17,9 +17,9 @@
                                   (when (= title nav-text)
                                     {:class "active"})) nav-text]])
                 [["Home" (b/path-for routes/routes :index)]
-                 ["Forum" "www.forum.arcaneminecraft.com"]
+                 ["Forum" "https://forum.arcaneminecraft.com"]
                  ["Tools" (b/path-for routes/routes :tools)]
-                 ["Dynmap" "www.game.arcaneminecraft.com/dynmap"]
+                 ["Dynmap" "https://game.arcaneminecraft.com/dynmap"]
                  ["Rules" (b/path-for routes/routes :rules)]]))]])
 
 ;;;

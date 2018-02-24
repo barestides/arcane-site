@@ -34,10 +34,10 @@
            [:p  comments]
            [:p "You can now build freely on Arcane."]
            [:p "Please review our rules at "
-            [:a {:href "arcaneminecraft.com/rules"} "arcaneminecraft.com/rules"]]
+            [:a {:href "arcaneminecraft.com/rules"} "arcaneminecraft.com/rules"] "."]
            [:span  "Server IP: " [:code {:style {:text-decoration :none}} "game.arcaneminecraft.com"]]
            [:p  "Also be sure to join our forums at "
-            [:a {:href "forum.arcaneminecraft.com"} "forum.arcaneminecraft.com"]]
+            [:a {:href "forum.arcaneminecraft.com"} "forum.arcaneminecraft.com"] "."]
            signature]]
    :plain-text  "Your application has been accepted!"})
 

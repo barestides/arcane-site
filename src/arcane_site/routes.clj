@@ -14,5 +14,4 @@
 
                   ;;Actually does things
                   ["submit-app" {:post :submit-app}]
-                  ["review-app" {:post :review-app}]]
-             "game.arcaneminecraft.com/dynmap" :dynmap])
+                  ["review-app" {:post :review-app}]]])
