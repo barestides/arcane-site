@@ -1,8 +1,6 @@
-(ns arcane-site.db
+(ns arcane-site.database
   (:require [clojure.java.jdbc :as jdbc]
-            [honeysql.core :as sql]
-            [honeysql.helpers :as hs]
-            [environ.core :as environ]
+            [lobos.schema :as ls]
             [arcane-site.util :as util]))
 
 (def table-specs
@@ -23,12 +21,9 @@
    [:bio "text"]
    [:referral "varchar(255)"]])
 
-(def database
-  {:dbtype "mysql"
-   :dbname "arcane_site_test"
-   :host "localhost"
-   :user (environ/env :database-user)
-   :password (environ/env :database-password)})
+(defn reset-db
+  [db]
+  (jdbc/db-do-commands db (jdbc/create-table-ddl :applications table-specs)))
 
 (def sample-app
   {:username "jugglingman456"
@@ -38,30 +33,31 @@
    :referral "myself"})
 
 (defn insert-application
-  [app-map]
-  (jdbc/insert! database "applications"
+  [db app-map]
+  (jdbc/insert! db "applications"
                 (merge app-map
                        {:date (new java.util.Date)
                         :status "PENDING"})))
 
 (defn get-applications
-  []
+  [db]
   (jdbc/query
-   database "SELECT * FROM applications"))
+   db "SELECT * FROM applications"))
 
 (defn get-pending-apps
-  []
+  [db]
   (jdbc/query
-   database "SELECT * FROM applications WHERE status = 'PENDING'"))
+   db "SELECT * FROM applications WHERE status = 'PENDING'"))
 
-(defn get-email [id]
-  (:email (first (jdbc/query database
-                             ["SELECT email FROM applications WHERE id = ?" id] )))
-  )
+(defn get-email
+  [db id]
+  (:email (first (jdbc/query db
+                             ["SELECT email FROM applications WHERE id = ?" id] ))))
 
-(defn review-app! [id comments decision staff-name]
+(defn review-app!
+  [db id comments decision staff-name]
   (let [status (case decision
                  :accept "ACCEPT"
                  :deny "DENY")]
-    (jdbc/update! database :applications {:status status :comment comments :reviewed_by staff-name}
+    (jdbc/update! db :applications {:status status :comment comments :reviewed_by staff-name}
                   ["id = ? " id])))

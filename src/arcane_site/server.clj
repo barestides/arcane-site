@@ -10,25 +10,28 @@
    [ring.middleware.json :refer [wrap-json-body]]
    [bidi.bidi :as bidi]
    [bidi.ring :refer (make-handler) :as br]
+   [environ.core :as environ]
    [arcane-site.authentication :as auth]
    [arcane-site.handlers :as handlers]
    [arcane-site.routes :as routes]
    [arcane-site.views.pages :as pages]))
 
-(defonce server-state (atom {:nonces #{}}))
+(defonce server-state (atom {:nonces #{}
+                             :db {}}))
 (defonce server (atom nil))
 
 (def routes->handlerfns
   ;;Static pages don't need the request info
  (let [page (fn [page-handler]
-               (fn [_] resp/response (page-handler)))]
+              (fn [_] resp/response (page-handler)))
+       with-state (fn [handler] (partial handler server-state))]
    {:index (fn [_] (pages/index-page))
     :apply (fn [_] (pages/main-application))
     :app-success (fn [_] (pages/app-success))
     :tools (fn [_] (pages/tools-page))
     :rules (fn [_] (pages/rules-page))
     :review (fn [req] (handlers/review-page req server-state))
-    :submit-app handlers/submit-app
+    :submit-app (with-state handlers/submit-app)
     :review-app handlers/review-app}))
 
 (def app (-> routes/routes
@@ -43,12 +46,19 @@
   (@server :timeout 100)
   (reset! server nil))
 
-(defn start-server []
-  (reset! server-state {:nonces #{}})
-  (reset! server (httpkit/run-server #'app {:port 8080})))
+(defn start-server
+  []
+  (let [db {:dbtype "mysql"
+            :dbname (environ/env :database-name)
+            :host "localhost"
+            :user (environ/env :database-user)
+            :password (environ/env :database-password)}]
+    (pprint/pprint db)
+    (reset! server-state {:nonces #{}
+                          :db db})
+    (reset! server (httpkit/run-server #'app {:port 8080}))))
 
 (defn restart-server
   []
   (stop-server)
-  (reset! server-state {:nonces #{}})
-  (reset! server (httpkit/run-server #'app {:port 8080})))
+  (start-server))
