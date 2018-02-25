@@ -3,7 +3,7 @@
             [bidi.bidi :as b]
             [arcane-site.util :as util]
             [arcane-site.views.copy :as copy]
-            [arcane-site.db :as db]
+            [arcane-site.database :as db]
             [arcane-site.routes :as routes]))
 
 ;;Navbar at top of page
@@ -142,12 +142,14 @@
                                                "margin-right: 5px" :name "accept"}]
       [:input.review-btn.col-lg-2.btn.btn-danger {:type :submit :value "Deny" :name "deny"}]]]))
 
-(defn application-list []
+(defn application-list
+  [server-state]
   [:div.col-sm-8
-   (let [apps (db/get-pending-apps)]
+   (prn @server-state)
+   (let [apps (db/get-pending-apps (:db @server-state))]
      (if (empty? apps)
        [:h3 "No pending apps"]
-       (map application (db/get-pending-apps))))])
+       (map application apps)))])
 
 ;;;
 ;;; Rules

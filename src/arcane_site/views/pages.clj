@@ -55,11 +55,12 @@
    "Success"
    [:h1 "Thank you for your application!"]))
 
-(defn review []
+(defn review
+  [server-state]
   (gen-page
    "Application Review"
    (list [:h1 "Pending Applications"]
-         (components/application-list))))
+         (components/application-list server-state))))
 
 (defn tools-page []
   (gen-page
