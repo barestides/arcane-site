@@ -12,6 +12,7 @@
    [bidi.ring :refer (make-handler) :as br]
    [environ.core :as environ]
    [arcane-site.authentication :as auth]
+   [arcane-site.database :as database]
    [arcane-site.handlers :as handlers]
    [arcane-site.routes :as routes]
    [arcane-site.views.pages :as pages]))
@@ -47,13 +48,14 @@
   (reset! server nil))
 
 (defn start-server
-  []
+  [& args]
   (let [db {:dbtype "mysql"
             :dbname (environ/env :database-name)
             :host "localhost"
             :user (environ/env :database-user)
             :password (environ/env :database-password)}]
-    (pprint/pprint db)
+    (when (contains? (set args) '("--create-db"))
+      (database/create-db db))
     (reset! server-state {:nonces #{}
                           :db db})
     (reset! server (httpkit/run-server #'app {:port 8080}))))

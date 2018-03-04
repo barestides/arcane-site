@@ -1,6 +1,5 @@
 (ns arcane-site.database
   (:require [clojure.java.jdbc :as jdbc]
-            [lobos.schema :as ls]
             [arcane-site.util :as util]))
 
 (def table-specs
@@ -21,7 +20,7 @@
    [:bio "text"]
    [:referral "varchar(255)"]])
 
-(defn reset-db
+(defn create-db
   [db]
   (jdbc/db-do-commands db (jdbc/create-table-ddl :applications table-specs)))
 

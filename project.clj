@@ -1,4 +1,4 @@
-(defproject arcane-site "0.1.0-SNAPSHOT"
+(defproject arcane-site "0.1.0"
   :description "Website for Arcane Survival minecraft server"
   :resource-paths ["resources/"]
   :url "arcaneminecraft.com"
@@ -20,8 +20,7 @@
                  [crypto-random "1.2.0"]
                  [mysql/mysql-connector-java "5.1.6"]
                  [base64-clj "0.1.1"]
-                 [org.clojure/java.jdbc "0.7.0-alpha3"]
-                 [lobos "1.0.0-beta3"]]
+                 [org.clojure/java.jdbc "0.7.0-alpha3"]]
 
   :plugins [[lein-ring "0.11.0"]
             [lein-environ "1.1.0"]]

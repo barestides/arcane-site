@@ -112,11 +112,24 @@ p {
     color: #000;
 }
 
+.bg-danger {
+    background-color: #9e2c2cd9;
+}
+
+.app-form {
+    padding-bottom: 20px;
+}
+
 #form-errors {
     border-radius: 2px;
     margin-bottom: 20px;
-    padding: 5px;
+    padding: 10px;
 }
+
+#form-errors ul {
+    list-style-type: none;
+}
+
 
 ol {
     font-size: 18px;

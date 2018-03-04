@@ -100,10 +100,10 @@
                (copy/get-copy :application-checkbox)]]]]]
    [:div.row
     [:div#form-errors.hidden.bg-danger.col-sm-offset-2.col-sm-4
-     [:p "There are errors with your application:"]
+     [:h4 "There are errors with your application:"]
      [:ul]]]
    [:div.row
-    [:input.btn.btn-default.col-sm-offset-2 {:type :submit :value "Submit"}]]])
+    [:input.btn.btn-default.col-sm-offset-2.col-sm-2.col-xs-10.col-xs-offset-1 {:type :submit :value "Submit"}]]])
 
 (def app-success
   [:div#app-success.hidden
@@ -145,7 +145,6 @@
 (defn application-list
   [server-state]
   [:div.col-sm-8
-   (prn @server-state)
    (let [apps (db/get-pending-apps (:db @server-state))]
      (if (empty? apps)
        [:h3 "No pending apps"]

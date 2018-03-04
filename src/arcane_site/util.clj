@@ -1,11 +1,16 @@
 (ns arcane-site.util
   (:require [clojure.string :as str]
+            [clojure.walk :as walk]
+            [clojure.pprint :as pprint]
             [clj-ssh.ssh :as ssh]
             [cheshire.core :as chesh]
             [org.httpkit.client :as http]
             [ring.util.codec :as ring-codec]
-            [clojure.walk :as walk]
             [environ.core :as environ]))
+(defn spy
+  [x & [f]]
+  (pprint/pprint (if f (f x) x))
+  x)
 
 (defn string-in-coll-case-ignore?
   [string coll]
@@ -13,9 +18,15 @@
         upper-coll (map (partial str/upper-case) coll)]
     (boolean (some #{upper-string} upper-coll))))
 
+;;good req url
+"https://forum.arcaneminecraft.com/admin/users/list/staff.json?api_key=15345155b26561fd9d51e9454b757e988c1e116df405f53035a498c52693a26b&api_username=jugglingman"
+;; "https://forum.arcaneminecraft.com/admin/users/list/staff.json?api_key=15345155b26561fd9d5e19454b757e988c1e116df405f53035a498c52693a26b&api_username=jugglingman"
+;;    "https://forum.arcaneminecraft.com/admin/users/list/staff.json?api_key=15345155b26561fd9d5e9454b757e988c1e116df405f53035a498c52693a26b&api_username=jugglingman"
 (defn get-staff-usernames []
   (let [req-url (str "https://forum.arcaneminecraft.com/admin/users/list/staff.json?api_key="
-                     (environ/env :forum-api-key))
+                     (environ/env :forum-api-key)
+                     "&api_username="
+                     (environ/env :forum-api-username))
         resp (http/get req-url)
         ;;convert json->edn and extract usernames
         valid-usernames (map :username (chesh/parse-string (:body @resp) true))]
