@@ -19,7 +19,6 @@
                 [["Home" (b/path-for routes/routes :index)]
                  ["Forum" "https://forum.arcaneminecraft.com"]
                  ["Tools" (b/path-for routes/routes :tools)]
-                 ["Dynmap" "https://game.arcaneminecraft.com/dynmap"]
                  ["Rules" (b/path-for routes/routes :rules)]]))]])
 
 ;;;

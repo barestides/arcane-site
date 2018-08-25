@@ -25,7 +25,7 @@
    :body body})
 
 (defn greylist-player [username]
-  (let [greylist-command (str "pex group trusted user add " username)]
+  (let [greylist-command (str "lp user " username " parent add trusted")]
     (util/execute-game-command greylist-command)))
 
 (def app-validator
@@ -40,13 +40,11 @@
 (defn submit-app
   "On successful validation, insert the request from the application form into the db."
   [server-state req]
-  (pprint/pprint server-state)
   (let [app-map (-> req
                     :params
                     (update :age #(Integer. %)))
         [validation-errors app-map] (bouncer/validate app-map app-validator)
         db (:db @server-state)]
-    (prn validation-errors)
     (if (nil? validation-errors)
       ;;If we have no validation errors, insert the app into the database, and send the user to the
       ;;success page
@@ -59,8 +57,8 @@
   [server-state req]
   (let [{:keys [username comments id accept staff-name]} (:params req)
         decision (if accept :accept :deny)
-        email (db/get-email id)
-        db (:db @server-state)]
+        db (:db @server-state)
+        email (db/get-email db id)]
     (do (db/review-app! db id comments decision staff-name)
         (when (not (empty? email))
           (email/email-app-review username email decision comments))

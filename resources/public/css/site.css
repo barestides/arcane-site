@@ -80,13 +80,14 @@ p {
 }
 
 #ip-box {
-    font-size: 21px;
     margin-right: 10px;
 }
 
 #ip {
+    font-size: 18px;
     border-radius: 4px 0px 0px 4px;
     border-right: 0;
+    height: 35px;
 }
 
 .application {

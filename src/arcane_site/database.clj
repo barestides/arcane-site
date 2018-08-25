@@ -1,5 +1,6 @@
 (ns arcane-site.database
   (:require [clojure.java.jdbc :as jdbc]
+            [taoensso.timbre :as t]
             [arcane-site.util :as util]))
 
 (def table-specs
@@ -20,9 +21,12 @@
    [:bio "text"]
    [:referral "varchar(255)"]])
 
-(defn create-db
+(defn apply-db-schema
   [db]
-  (jdbc/db-do-commands db (jdbc/create-table-ddl :applications table-specs)))
+  (t/info "Applying database schema")
+  (try (jdbc/db-do-commands db (jdbc/create-table-ddl :applications table-specs))
+       (catch Exception e
+         (t/error e))))
 
 (def sample-app
   {:username "jugglingman456"

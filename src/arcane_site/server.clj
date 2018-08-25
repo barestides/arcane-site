@@ -33,7 +33,7 @@
     :rules (fn [_] (pages/rules-page))
     :review (fn [req] (handlers/review-page req server-state))
     :submit-app (with-state handlers/submit-app)
-    :review-app handlers/review-app}))
+    :review-app (with-state handlers/review-app)}))
 
 (def app (-> routes/routes
              (make-handler routes->handlerfns)
@@ -55,10 +55,10 @@
             :user (environ/env :database-user)
             :password (environ/env :database-password)}]
     (when (contains? (set args) '("--create-db"))
-      (database/create-db db))
+      (database/apply-db-schema db))
     (reset! server-state {:nonces #{}
                           :db db})
-    (reset! server (httpkit/run-server #'app {:port 8080}))))
+    (reset! server (httpkit/run-server #'app {:port 8082}))))
 
 (defn restart-server
   []
